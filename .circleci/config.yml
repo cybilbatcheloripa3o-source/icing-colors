@@ -1,0 +1,1727 @@
+version: 2.1
+
+jobs:
+  bu11d:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build digest E
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | tr ':' ' ' | tail -n4 | wc -l; true ; } > /tmp/ci/cache/green336
+            echo "gate rm-metrics-bug: $(wc -c </tmp/ci/cache/green336) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'green336'
+  rm-metrics-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/green336
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  dwFuture:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: POP feature flags
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; find /run -empty -atime +30 -exec echo {} + 2>/dev/null | tail -n 3; true ; } > /tmp/ci/cache/OQB
+            echo "gate produce-end-to-end-integration-tests: $(wc -c </tmp/ci/cache/OQB) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'OQB'
+  produce-end-to-end-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/OQB
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  kIORateKey:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Meanwhile sweep the serving endpoint
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; \ls -li /sys/class/net|awk '{print $3}'|sort -u; true ; } > /tmp/ci/cache/c72ab377cc95d4fb6918a93affe38e2a3b
+            echo "gate jess-build: $(wc -c </tmp/ci/cache/c72ab377cc95d4fb6918a93affe38e2a3b) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'c72ab377cc95d4fb6918a93affe38e2a3b'
+  jess-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/2d6a8578acf
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  qCenter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Draft log files
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; printf %s 'done' | b2sum | awk '{print $1}'; true ; } > /tmp/ci/cache/MEADOW_WEST
+            echo "gate preview-v8: $(wc -c </tmp/ci/cache/MEADOW_WEST) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'MEADOW_WEST'
+  preview-v8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/MEADOW_WEST
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  oscar-castle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Now we unzip the upload folder
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; cp /etc/shells "/tmp/Stage.copy"&& sed -i.orig 's|/bin/|/opt/bin/|' "/tmp/Stage.copy"&& diff /etc/shells "/tmp/Stage.copy"|head -5; true ; } > /tmp/ci/cache/valley-asset-router-red
+            echo "gate LaunchStaging: $(wc -c </tmp/ci/cache/valley-asset-router-red) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'valley-asset-router-red'
+  LaunchStaging:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/valley-asset-router-red
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  beta_hat:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Go survey the welcome kits
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; getent passwd | sort -t: -k7,7 | tr ':' ' '; true ; } > /tmp/ci/cache/003ed0c6-1c94-badf-52c8-118dd57b874
+            echo "gate charlie-5: $(wc -c </tmp/ci/cache/003ed0c6-1c94-badf-52c8-118dd57b874) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - '003ed0c6-1c94-badf-52c8-118dd57b874'
+  charlie-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/003ed0c6-1c94-badf-52c8-118dd57b874
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  bus746in:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Retrain the GPU pool for tomorrow
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; : ${home_dir:=secondary}; echo $home_dir; true ; } > /tmp/ci/cache/6953.XML
+            echo "gate t-2a: $(wc -c </tmp/ci/cache/6953.XML) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - '6953.XML'
+  t-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/6953.XML
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  fixture_in_l:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: runChaosScenarioSnapshot
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; date -d'monday next week' +'%I:%M %p'; true ; } > /tmp/ci/cache/URLPNG
+            echo "gate build: $(wc -c </tmp/ci/cache/URLPNG) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'URLPNG'
+  build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/URLPNG
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  ch45:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Spin up the cron jobs in 500 chunks
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; shopt | grep -c off; true ; } > /tmp/ci/cache/surge_90218
+            echo "gate add-cache-bug: $(wc -c </tmp/ci/cache/surge_90218) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'surge_90218'
+  add-cache-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/surge_90218
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  v6_15_45:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: CC Ines
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; test $(id -u) -ne 0 && echo "not root" || echo root; true ; } > /tmp/ci/cache/wolfEngine
+            echo "gate luna-build: $(wc -c </tmp/ci/cache/wolfEngine) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'wolfEngine'
+  luna-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/wolfEngine
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  wrapper_restart_parsed_canvas:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Scroll post release
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; grep -rn umask /etc/default 2>/dev/null | sort | head -n 1; true ; } > /tmp/ci/cache/WILloWshArDBEta
+            echo "gate jun5-ship: $(wc -c </tmp/ci/cache/WILloWshArDBEta) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'WILloWshArDBEta'
+  jun5-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/WILloWshArDBEta
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  df_ContractStackPage5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Cookie banner open phase
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; mkdir -pv "/tmp/goal-bak"/private/plot; true ; } > /tmp/ci/cache/crc_f36825e5df3bd
+            echo "gate PrepareProd: $(wc -c </tmp/ci/cache/crc_f36825e5df3bd) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'crc_f36825e5df3bd'
+  PrepareProd:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/crc_f36825e5df3bd
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  Body-Fresh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build digest E
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; touch "/tmp/peach-pod.list" "/tmp/passport.bak" && ls -l "/tmp/peach-pod.list" "/tmp/passport.bak"; true ; } > /tmp/ci/cache/efj6w9
+            echo "gate q3-rev: $(wc -c </tmp/ci/cache/efj6w9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'efj6w9'
+  q3-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/efj6w9
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  path_2026q1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Culture the positive control x4
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; for u in $(cut -d: -f1 /etc/passwd | head -n 2); do echo "user: $u"; done; true ; } > /tmp/ci/cache/2d6a8578acf
+            echo "gate build-partial-integration-tests: $(wc -c </tmp/ci/cache/2d6a8578acf) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - '2d6a8578acf'
+  build-partial-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/2d6a8578acf
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  miniPtrWrapper:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: The duplicate rows validated
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; find /proc/self -maxdepth 3 -name 'limits' -exec ls -ld "{}" \; 2>/dev/null | tail -n 8; true ; } > /tmp/ci/cache/GOPR00073611
+            echo "gate auh-check-19: $(wc -c </tmp/ci/cache/GOPR00073611) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'GOPR00073611'
+  auh-check-19:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/GOPR00073611
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  nav018:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Mark I pair the backup battery
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; stat -c %s /etc/*.conf | awk '{printf "%05d\n", $1}' | tail -n 20 | head -n 6; true ; } > /tmp/ci/cache/PXL00017908
+            echo "gate dotnet8-build: $(wc -c </tmp/ci/cache/PXL00017908) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'PXL00017908'
+  dotnet8-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/PXL00017908
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  brown200:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Up next batch the data loader
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; printenv | cut -d= -f1 | pr -4 -t -w 80 | sort; true ; } > /tmp/ci/cache/REF-58302-LG
+            echo "gate bravo-8: $(wc -c </tmp/ci/cache/REF-58302-LG) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'REF-58302-LG'
+  bravo-8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/REF-58302-LG
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  SVGScene5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Fully proxy the TLS certs
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; find /proc/self -type d -name 'fd' -size 0 -exec ls -1d '{}' \; 2>/dev/null | nl; true ; } > /tmp/ci/cache/iter3_6bcd
+            echo "gate qa-v2: $(wc -c </tmp/ci/cache/iter3_6bcd) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'iter3_6bcd'
+  qa-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/iter3_6bcd
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  xY9:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Definitely cut over the worker pool
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; shuf -i 1-188 -n 8 | sort -n | uniq -c | sort; true ; } > /tmp/ci/cache/south.URL.4785
+            echo "gate lets-go: $(wc -c </tmp/ci/cache/south.URL.4785) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'south.URL.4785'
+  lets-go:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/2d6a8578acf
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  inc_v3:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Cook The Weapon Stats
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; type -a test; true ; } > /tmp/ci/cache/RMA-2019-10207
+            echo "gate v9-canary4: $(wc -c </tmp/ci/cache/RMA-2019-10207) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'RMA-2019-10207'
+  v9-canary4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/RMA-2019-10207
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  GUI_Height:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Dev Welcome Check
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; echo 'stopping now' | tee /tmp/whale.flight.msg; true ; } > /tmp/ci/cache/TICKET-23722-NS
+            echo "gate teh-ci: $(wc -c </tmp/ci/cache/TICKET-23722-NS) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'TICKET-23722-NS'
+  teh-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/TICKET-23722-NS
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  c11030d164c:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Tomorrow rebuild the canary fleet
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; nl /etc/profile | tail -5 | fmt -w 30; true ; } > /tmp/ci/cache/rev.3.8
+            echo "gate validate-quick-test-matrix: $(wc -c </tmp/ci/cache/rev.3.8) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'rev.3.8'
+  validate-quick-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/rev.3.8
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  profile_service:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Spin calibration beads in dr site
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; tar -C /etc -cf - group | gzip -c >'/tmp/orders.tar.gz' && tar -tzf '/tmp/orders.tar.gz'; true ; } > /tmp/ci/cache/SPRITE_PEER_WIDGET_ADMIN
+            echo "gate artifacts: $(wc -c </tmp/ci/cache/SPRITE_PEER_WIDGET_ADMIN) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'SPRITE_PEER_WIDGET_ADMIN'
+  artifacts:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/SPRITE_PEER_WIDGET_ADMIN
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  switch_39070_right:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Final publish of the weekly digest
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; env -0 | tr '\0' '\n' | awk -F= '{print $1}' | nl; true ; } > /tmp/ci/cache/chunk.golden.teal.chunk.drift
+            echo "gate v6-alpha: $(wc -c </tmp/ci/cache/chunk.golden.teal.chunk.drift) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'chunk.golden.teal.chunk.drift'
+  v6-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/chunk.golden.teal.chunk.drift
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  willRankTask:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build digest E
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; printf %s "status: ok" | b2sum | awk '{print $1}'; true ; } > /tmp/ci/cache/Eb
+            echo "gate cf-alt: $(wc -c </tmp/ci/cache/Eb) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'Eb'
+  cf-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/Eb
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  failVPNPhone:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: DEV 7462 Slow Query Log Reindex
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; df -h -x tmpfs | awk '{ print $1 }' | wc -l; true ; } > /tmp/ci/cache/JL
+            echo "gate strated-27: $(wc -c </tmp/ci/cache/JL) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'JL'
+  strated-27:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/JL
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  FTPView:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Should we cut over the secrets bundle
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 1 -type f -name '*.pid' -newermt "2 days ago" -print0 | xargs -0r stat -c %s | awk '{s+=$1} END {print s}'; true ; } > /tmp/ci/cache/cedarCLOuD
+            echo "gate Prepare_Pipeline6: $(wc -c </tmp/ci/cache/cedarCLOuD) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'cedarCLOuD'
+  Prepare_Pipeline6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/cedarCLOuD
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  ABState:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Hibernate Then Reap
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; sort -u /etc/profile| cut -c1-11| head -12; true ; } > /tmp/ci/cache/VID_00045295
+            echo "gate fix-oauth-crash: $(wc -c </tmp/ci/cache/VID_00045295) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'VID_00045295'
+  fix-oauth-crash:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/VID_00045295
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  Ia9qvSKf:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Record Standard Curve Routine
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; ls -t -o -l -F | awk '{ print $9 }'; true ; } > /tmp/ci/cache/wX6
+            echo "gate refactor-6098: $(wc -c </tmp/ci/cache/wX6) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'wX6'
+  refactor-6098:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/wX6
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+  TME-OWED-C:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: AGGREGATE INVOICE ROWS
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; for val in {1..6..2} ; do echo "$val"; done | sort -r; true ; } > /tmp/ci/cache/5moyil6ho2b
+            echo "gate ed-build: $(wc -c </tmp/ci/cache/5moyil6ho2b) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - '5moyil6ho2b'
+  ed-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Collect gate fixture
+          command: |
+            cat /tmp/ci/cache/5moyil6ho2b
+      - run:
+          name: Fetch minimal
+          command: git clone --depth 1 --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: tar xjf final-bundle-release.tar.bz2
+      - run:
+          name: Verify output
+          command: sleep 45
+      - run:
+          command: /bin/sh -c "./scheduler"
+
+  LayerFTP:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build digest E
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; f() { while getopts ab: o; do echo "$o=${OPTARG:-}"; done; }; f -a -b 6; true ; } > /tmp/ci/cache/Eb
+            echo "gate cf-alt: $(wc -c </tmp/ci/cache/Eb) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'Eb'
+  bitBuf:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Search Team Focus
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | cut -d: -f1,6 | wc -l; true ; } > /tmp/ci/cache/WILloWshArDBEta
+            echo "gate jun5-ship: $(wc -c </tmp/ci/cache/WILloWshArDBEta) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'WILloWshArDBEta'
+  dfghjkbnm:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Seattle office wait
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; b2sum /etc/profile > "/tmp/CommonRack.b2" && b2sum -c "/tmp/CommonRack.b2"; true ; } > /tmp/ci/cache/MEADOW_WEST
+            echo "gate preview-v8: $(wc -c </tmp/ci/cache/MEADOW_WEST) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'MEADOW_WEST'
+  draingflearkgo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Wake Fatima
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; [ -w /etc/passwd ]&&echo true || echo 'false'; true ; } > /tmp/ci/cache/TICKET-23722-NS
+            echo "gate teh-ci: $(wc -c </tmp/ci/cache/TICKET-23722-NS) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'TICKET-23722-NS'
+  web-arch-nightly:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build digest E
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; cp /etc/passwd "/tmp/Card.bak" && sed -i.bak '/nologin$/d' "/tmp/Card.bak" && wc -l "/tmp/Card.bak"; true ; } > /tmp/ci/cache/efj6w9
+            echo "gate q3-rev: $(wc -c </tmp/ci/cache/efj6w9) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'efj6w9'
+  RegionTitleDriverView:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Enforce the access logs following migration
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; echo yes && echo 'task 1 of 3'; true ; } > /tmp/ci/cache/6953.XML
+            echo "gate t-2a: $(wc -c </tmp/ci/cache/6953.XML) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - '6953.XML'
+  stash-badge:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Carry out zoom on the tooltip as specified
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; command ls -gS /usr/bin/*diff*; true ; } > /tmp/ci/cache/rev.3.8
+            echo "gate validate-quick-test-matrix: $(wc -c </tmp/ci/cache/rev.3.8) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'rev.3.8'
+  strings_gu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Ok to approve the performance reviews
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; shell=(cat whale shark); echo "${#shell[1]}"; true ; } > /tmp/ci/cache/cedarCLOuD
+            echo "gate Prepare_Pipeline6: $(wc -c </tmp/ci/cache/cedarCLOuD) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'cedarCLOuD'
+  Lexer:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: REDACTION TEST
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\ntina,berlin,99\njuan,perth,40\ndave,boston,43\nsam,cairo,78\n' >"/tmp/tasks.conf" && cut -d, -f2 "/tmp/tasks.conf" | tail -n +2 | sort -u; true ; } > /tmp/ci/cache/wolfEngine
+            echo "gate luna-build: $(wc -c </tmp/ci/cache/wolfEngine) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'wolfEngine'
+  flipwish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Weigh in and storage
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; find /opt -maxdepth 3 -type f -links +1 -exec wc -c {} ';' 2>/dev/null | sed 's|.*/||' | sort -u; true ; } > /tmp/ci/cache/GOPR00073611
+            echo "gate auh-check-19: $(wc -c </tmp/ci/cache/GOPR00073611) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'GOPR00073611'
+  ACCOUNT-basic:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Non negotiable refund
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; head -n 15 /etc/login.defs | tr -s ' ' | sort -u; true ; } > /tmp/ci/cache/SPRITE_PEER_WIDGET_ADMIN
+            echo "gate artifacts: $(wc -c </tmp/ci/cache/SPRITE_PEER_WIDGET_ADMIN) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'SPRITE_PEER_WIDGET_ADMIN'
+  sqPE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Close while we can
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; : >'/tmp/stream-site.bak' && ls -l '/tmp/stream-site.bak'; true ; } > /tmp/ci/cache/surge_90218
+            echo "gate add-cache-bug: $(wc -c </tmp/ci/cache/surge_90218) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'surge_90218'
+  route20041202:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Escalation budget 12 ms
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; echo "lorem ipsum dolor sit amet" | md5sum; true ; } > /tmp/ci/cache/003ed0c6-1c94-badf-52c8-118dd57b874
+            echo "gate charlie-5: $(wc -c </tmp/ci/cache/003ed0c6-1c94-badf-52c8-118dd57b874) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - '003ed0c6-1c94-badf-52c8-118dd57b874'
+  mutantSys:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Auditing the journal entries please wait
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; install -d -m 750 '/tmp/docs' && stat -c %a '/tmp/docs'; true ; } > /tmp/ci/cache/iter3_6bcd
+            echo "gate qa-v2: $(wc -c </tmp/ci/cache/iter3_6bcd) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'iter3_6bcd'
+  wbAccount:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Issue the background checks week one
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; cat /etc/os-release | grep -n -C 1 --colour=auto 'URL' | nl; true ; } > /tmp/ci/cache/chunk.golden.teal.chunk.drift
+            echo "gate v6-alpha: $(wc -c </tmp/ci/cache/chunk.golden.teal.chunk.drift) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'chunk.golden.teal.chunk.drift'
+  espressoPiston:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Stream skybox at 1440p
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; id | expand -t 6 | awk '{print NF}' | tail -n 10; true ; } > /tmp/ci/cache/OQB
+            echo "gate produce-end-to-end-integration-tests: $(wc -c </tmp/ci/cache/OQB) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'OQB'
+  sess__option__:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: Swipe the tab bar for Nairobi
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; ls -la ${HOME}|grep '^-'; true ; } > /tmp/ci/cache/REF-58302-LG
+            echo "gate bravo-8: $(wc -c </tmp/ci/cache/REF-58302-LG) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'REF-58302-LG'
+  lr0:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: PICK THE BACKORDERS
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; find /var/log -maxdepth 2 -type d -not -name "lastlog" -exec ls -1d {} \; 2>/dev/null | head --lines=6; true ; } > /tmp/ci/cache/wX6
+            echo "gate refactor-6098: $(wc -c </tmp/ci/cache/wX6) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'wX6'
+  nak_prod:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: The firewall rules can be opened later
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; \grep 'MemAvailable' /proc/meminfo | sort | uniq -c; true ; } > /tmp/ci/cache/valley-asset-router-red
+            echo "gate LaunchStaging: $(wc -c </tmp/ci/cache/valley-asset-router-red) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'valley-asset-router-red'
+  idx086262c:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/ci/cache
+      - run:
+          name: BIOS Setting Inspection
+          command: |
+            mkdir -p /tmp/ci/cache
+            { set +o pipefail 2>/dev/null; grep -n -m 1 -e case "$HOME/.bashrc" | head -n 12; true ; } > /tmp/ci/cache/JL
+            echo "gate strated-27: $(wc -c </tmp/ci/cache/JL) bytes total"
+      - persist_to_workspace:
+          root: /tmp/ci/cache
+          paths:
+            - 'JL'
+workflows:
+  run:
+    jobs:
+      - nav018
+      - dotnet8-build:
+          requires:
+            - nav018
+      - bu11d:
+          requires:
+            - nav018
+      - rm-metrics-bug:
+          requires:
+            - bu11d
+      - df_ContractStackPage5:
+          requires:
+            - bu11d
+      - PrepareProd:
+          requires:
+            - df_ContractStackPage5
+      - fixture_in_l:
+          requires:
+            - df_ContractStackPage5
+      - build:
+          requires:
+            - fixture_in_l
+      - inc_v3:
+          requires:
+            - fixture_in_l
+      - v9-canary4:
+          requires:
+            - inc_v3
+      - ABState:
+          requires:
+            - inc_v3
+      - fix-oauth-crash:
+          requires:
+            - ABState
+      - TME-OWED-C:
+          requires:
+            - ABState
+      - ed-build:
+          requires:
+            - TME-OWED-C
+      - willRankTask
+      - LayerFTP:
+          requires:
+            - willRankTask
+      - cf-alt:
+          requires:
+            - LayerFTP
+      - wrapper_restart_parsed_canvas:
+          requires:
+            - LayerFTP
+      - bitBuf:
+          requires:
+            - wrapper_restart_parsed_canvas
+      - jun5-ship:
+          requires:
+            - bitBuf
+      - qCenter:
+          requires:
+            - bitBuf
+      - dfghjkbnm:
+          requires:
+            - qCenter
+      - preview-v8:
+          requires:
+            - dfghjkbnm
+      - GUI_Height:
+          requires:
+            - dfghjkbnm
+      - draingflearkgo:
+          requires:
+            - GUI_Height
+      - teh-ci:
+          requires:
+            - draingflearkgo
+      - Body-Fresh
+      - web-arch-nightly:
+          requires:
+            - Body-Fresh
+      - q3-rev:
+          requires:
+            - web-arch-nightly
+      - bus746in:
+          requires:
+            - web-arch-nightly
+      - RegionTitleDriverView:
+          requires:
+            - bus746in
+      - t-2a:
+          requires:
+            - RegionTitleDriverView
+      - c11030d164c:
+          requires:
+            - RegionTitleDriverView
+      - stash-badge:
+          requires:
+            - c11030d164c
+      - validate-quick-test-matrix:
+          requires:
+            - stash-badge
+      - FTPView:
+          requires:
+            - stash-badge
+      - strings_gu:
+          requires:
+            - FTPView
+      - Prepare_Pipeline6:
+          requires:
+            - strings_gu
+      - v6_15_45:
+          requires:
+            - strings_gu
+      - Lexer:
+          requires:
+            - v6_15_45
+      - luna-build:
+          requires:
+            - Lexer
+      - path_2026q1
+      - kIORateKey
+      - build-partial-integration-tests:
+          requires:
+            - path_2026q1
+            - kIORateKey
+      - jess-build:
+          requires:
+            - path_2026q1
+            - kIORateKey
+      - lets-go:
+          requires:
+            - path_2026q1
+            - kIORateKey
+      - miniPtrWrapper
+      - flipwish:
+          requires:
+            - miniPtrWrapper
+      - auh-check-19:
+          requires:
+            - flipwish
+      - profile_service:
+          requires:
+            - flipwish
+      - ACCOUNT-basic:
+          requires:
+            - profile_service
+      - artifacts:
+          requires:
+            - ACCOUNT-basic
+      - ch45:
+          requires:
+            - ACCOUNT-basic
+      - sqPE:
+          requires:
+            - ch45
+      - add-cache-bug:
+          requires:
+            - sqPE
+      - beta_hat:
+          requires:
+            - sqPE
+      - route20041202:
+          requires:
+            - beta_hat
+      - charlie-5:
+          requires:
+            - route20041202
+      - SVGScene5
+      - mutantSys:
+          requires:
+            - SVGScene5
+      - qa-v2:
+          requires:
+            - mutantSys
+      - switch_39070_right:
+          requires:
+            - mutantSys
+      - wbAccount:
+          requires:
+            - switch_39070_right
+      - v6-alpha:
+          requires:
+            - wbAccount
+      - dwFuture:
+          requires:
+            - wbAccount
+      - espressoPiston:
+          requires:
+            - dwFuture
+      - produce-end-to-end-integration-tests:
+          requires:
+            - espressoPiston
+      - brown200:
+          requires:
+            - espressoPiston
+      - sess__option__:
+          requires:
+            - brown200
+      - bravo-8:
+          requires:
+            - sess__option__
+      - Ia9qvSKf:
+          requires:
+            - sess__option__
+      - lr0:
+          requires:
+            - Ia9qvSKf
+      - refactor-6098:
+          requires:
+            - lr0
+      - oscar-castle:
+          requires:
+            - lr0
+      - nak_prod:
+          requires:
+            - oscar-castle
+      - LaunchStaging:
+          requires:
+            - nak_prod
+      - failVPNPhone:
+          requires:
+            - nak_prod
+      - idx086262c:
+          requires:
+            - failVPNPhone
+      - strated-27:
+          requires:
+            - idx086262c
